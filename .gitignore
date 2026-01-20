@@ -1,0 +1,28 @@
+# Rust
+backend/target/
+**/target/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtualenv
+.venv/
+venv/
+
+# Node / tooling (por si acaso)
+node_modules/
+
+# Docker
+*.log
+
+# Environment files
+.env
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

@@ -1,11 +1,10 @@
 apiVersion: 1
-
 providers:
-  - name: "Default"
+  - name: drones
     orgId: 1
-    folder: ""
+    folder: Drones
     type: file
     disableDeletion: true
-    editable: true
+    updateIntervalSeconds: 30
     options:
       path: /var/lib/grafana/dashboards

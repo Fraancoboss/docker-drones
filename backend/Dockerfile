@@ -1,5 +1,5 @@
-# Build
-FROM rust:1.76-bookworm AS build
+# Build (Cargo.lock v4 needs a newer Cargo)
+FROM rust:1.81-bookworm AS build
 WORKDIR /app
 COPY . .
 RUN cargo build --release
