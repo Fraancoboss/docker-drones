@@ -14,7 +14,10 @@ type Config struct {
 	MQTTPort          int
 	BackendMetricsURL string
 	PrometheusURL     string
+	GrafanaURL        string
 	MetricsDocPath    string
+	FreshnessWarnSec  int
+	FreshnessFailSec  int
 }
 
 const (
@@ -22,7 +25,10 @@ const (
 	defaultMQTTPort      = 1883
 	defaultBackendPort   = 8080
 	defaultPrometheusURL = "http://localhost:9090"
+	defaultGrafanaURL    = "http://localhost:3000"
 	defaultMetricsDoc    = "METRICS.md"
+	defaultFreshWarnSec  = 30
+	defaultFreshFailSec  = 120
 )
 
 // PARTE CRITICA **********************
@@ -36,13 +42,19 @@ func FromEnv() Config {
 	backendPort := getenvInt("BACKEND_HTTP_PORT", defaultBackendPort)
 	backendURL := fmt.Sprintf("http://localhost:%d/metrics", backendPort)
 	promURL := getenv("PROMETHEUS_URL", defaultPrometheusURL)
+	grafanaURL := getenv("GRAFANA_URL", defaultGrafanaURL)
+	freshWarn := getenvInt("FRESHNESS_WARN_SEC", defaultFreshWarnSec)
+	freshFail := getenvInt("FRESHNESS_FAIL_SEC", defaultFreshFailSec)
 
 	return Config{
 		MQTTHost:          mqttHost,
 		MQTTPort:          mqttPort,
 		BackendMetricsURL: backendURL,
 		PrometheusURL:     promURL,
+		GrafanaURL:        grafanaURL,
 		MetricsDocPath:    getenv("METRICS_DOC", defaultMetricsDoc),
+		FreshnessWarnSec:  freshWarn,
+		FreshnessFailSec:  freshFail,
 	}
 }
 

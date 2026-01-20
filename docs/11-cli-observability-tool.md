@@ -60,6 +60,47 @@ Uso:
 drone-observe validate
 ```
 
+### 4) topology
+Muestra la topologia efectiva del sistema:
+- Edge -> MQTT -> Backend -> Prometheus -> Grafana
+- Componentes OK vs mudos
+
+Uso:
+```bash
+drone-observe topology
+```
+
+### 5) freshness
+Evalua recencia de datos observados:
+- Tiempo desde ultima muestra
+- Semaforo temporal
+
+Uso:
+```bash
+drone-observe freshness
+```
+
+### 6) drift
+Detecta deriva entre docs y estado real:
+- Metricas documentadas vs reales
+- Dashboards versionados vs docs
+
+Uso:
+```bash
+drone-observe drift
+```
+
+### 7) limits
+Expone limites tecnicos observados:
+- Frecuencia de mensajes
+- Cadencia de scrape observada
+- Conteo de metricas y cardinalidad
+
+Uso:
+```bash
+drone-observe limits
+```
+
 ## Ayuda multi-idioma
 La ayuda es bilingue y explicita (sin auto-deteccion):
 ```bash
@@ -73,7 +114,10 @@ drone-observe health --help --es
 - `MQTT_PORT` (default: `1883`)
 - `BACKEND_HTTP_PORT` (default: `8080`)
 - `PROMETHEUS_URL` (default: `http://localhost:9090`)
+- `GRAFANA_URL` (default: `http://localhost:3000`)
 - `METRICS_DOC` (default: `METRICS.md`)
+- `FRESHNESS_WARN_SEC` (default: `30`)
+- `FRESHNESS_FAIL_SEC` (default: `120`)
 
 Nota: para `validate`, ejecutar desde la raiz del repo o ajustar `METRICS_DOC`.
 

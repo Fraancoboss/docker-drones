@@ -47,6 +47,16 @@ func CheckReady(ctx context.Context, baseURL string) error {
 // No agregar queries que impliquen alta cardinalidad o labels variables.
 // FIN DE PARTE CRITICA ****************
 func QueryInstant(ctx context.Context, baseURL, expr string) (float64, bool, error) {
+	val, _, ok, err := QueryInstantWithTimestamp(ctx, baseURL, expr)
+	return val, ok, err
+}
+
+// PARTE CRITICA **********************
+// Retorna valor y timestamp de la muestra para checks de freshness.
+// Si se ignora el timestamp, se pierde la capacidad de detectar datos viejos.
+// No interpretar ausencia de datos como cero; debe marcarse como "sin datos".
+// FIN DE PARTE CRITICA ****************
+func QueryInstantWithTimestamp(ctx context.Context, baseURL, expr string) (float64, float64, bool, error) {
 	u := fmt.Sprintf("%s/api/v1/query", baseURL)
 	q := url.Values{}
 	q.Set("query", expr)
@@ -69,18 +79,29 @@ func QueryInstant(ctx context.Context, baseURL, expr string) (float64, bool, err
 		return 0, false, err
 	}
 	if payload.Status != "success" || len(payload.Data.Result) == 0 {
-		return 0, false, nil
+		return 0, 0, false, nil
 	}
 	if len(payload.Data.Result[0].Value) < 2 {
-		return 0, false, nil
+		return 0, 0, false, nil
+	}
+	var val float64
+	var ts float64
+	switch v := payload.Data.Result[0].Value[0].(type) {
+	case string:
+		if _, err := fmt.Sscanf(v, "%f", &ts); err != nil {
+			return 0, 0, false, nil
+		}
+	case float64:
+		ts = v
+	default:
+		return 0, 0, false, nil
 	}
 	valStr, ok := payload.Data.Result[0].Value[1].(string)
 	if !ok {
-		return 0, false, nil
+		return 0, 0, false, nil
 	}
-	var val float64
 	if _, err := fmt.Sscanf(valStr, "%f", &val); err != nil {
-		return 0, false, nil
+		return 0, 0, false, nil
 	}
-	return val, true, nil
+	return val, ts, true, nil
 }
