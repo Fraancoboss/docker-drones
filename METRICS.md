@@ -28,10 +28,14 @@ Principios:
 |---|---|---|---|---|---|---|
 | mqtt_messages_total | counter | mensajes | Total de mensajes MQTT consumidos por el backend (telemetria + eventos). | - | backend | Incrementa por cada publish recibido. |
 | drone_battery_last_pct | gauge | pct | Ultimo porcentaje de bateria visto en telemetria. | - | backend | Actualiza cuando llega telemetria con `battery_pct`. |
+| ml_anomaly_score | gauge | score | Anomaly score derivado del modelo ML (0-1). | - | ml-analytics | Calculado sobre ventana de telemetria/eventos. |
+| ml_state | gauge | enum | Estado operacional derivado del anomaly score (0=OK,1=WARN,2=CRIT). | - | ml-analytics | Calculado sobre ventana de telemetria/eventos. |
 
 ## 4. Metricas minimas V1 (actuales)
 - `mqtt_messages_total` (counter, mensajes).
 - `drone_battery_last_pct` (gauge, pct).
+- `ml_anomaly_score` (gauge, score).
+- `ml_state` (gauge, enum).
 
 ## 5. Metricas recomendadas FUTURO
 Marcadas como FUTURO y no implementadas aun.

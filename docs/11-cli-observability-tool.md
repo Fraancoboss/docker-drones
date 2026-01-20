@@ -50,6 +50,17 @@ Uso:
 drone-observe telemetry
 ```
 
+### 2.1) llm
+Visualiza estado ML en vivo:
+- Anomaly score (ml_anomaly_score)
+- Estado operacional (ml_state)
+- Alerta interpretada (color por estado)
+
+Uso:
+```bash
+drone-observe llm
+```
+
 ### 3) validate
 Audita el contrato de `METRICS.md`:
 - Todas las metricas del contrato existen

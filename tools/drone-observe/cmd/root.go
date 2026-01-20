@@ -34,6 +34,8 @@ func Execute(args []string) int {
 		return runHealth(cfg)
 	case "telemetry":
 		return runTelemetry(cfg)
+	case "llm":
+		return runLLM(cfg)
 	case "validate":
 		return runValidate(cfg)
 	case "topology":
@@ -124,6 +126,20 @@ Flags:
   --es         espanol (default)
   --en         english
 `
+	case "llm":
+		return `drone-observe llm
+Visualiza estado ML en vivo (sin UI web).
+
+Muestra:
+  - Anomaly score (ml_anomaly_score)
+  - Estado operacional (ml_state)
+  - Alerta interpretada (color por estado)
+
+Flags:
+  --help, -h   ayuda
+  --es         espanol (default)
+  --en         english
+`
 	case "validate":
 		return `drone-observe validate
 Valida contratos de METRICS.md contra Prometheus.
@@ -197,6 +213,7 @@ CLI de validacion del pipeline de observabilidad (GitOps).
 Comandos:
   health     valida Control Plane
   telemetry  observa Data Plane en vivo
+  llm        observa estado ML en vivo
   validate   audita contratos de metricas
   topology   topologia efectiva del sistema
   freshness  recencia de datos
@@ -247,6 +264,20 @@ Live Data Plane view (no web UI).
 Shows:
   - Last battery (drone_battery_last_pct)
   - Messages per second rate
+
+Flags:
+  --help, -h   help
+  --es         spanish (default)
+  --en         english
+`
+	case "llm":
+		return `drone-observe llm
+Live ML state view (no web UI).
+
+Shows:
+  - Anomaly score (ml_anomaly_score)
+  - Operational state (ml_state)
+  - Interpreted alert (state-colored)
 
 Flags:
   --help, -h   help
@@ -326,6 +357,7 @@ Observability pipeline validation CLI (GitOps).
 Commands:
   health     validate Control Plane
   telemetry  live Data Plane view
+  llm        live ML state view
   validate   audit metric contracts
   topology   effective system topology
   freshness  data recency

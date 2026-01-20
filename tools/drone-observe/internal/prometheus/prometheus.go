@@ -64,19 +64,19 @@ func QueryInstantWithTimestamp(ctx context.Context, baseURL, expr string) (float
 
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, u, nil)
 	if err != nil {
-		return 0, false, err
+		return 0, 0, false, err
 	}
 
 	client := &http.Client{Timeout: httpTimeout}
 	resp, err := client.Do(req)
 	if err != nil {
-		return 0, false, err
+		return 0, 0, false, err
 	}
 	defer resp.Body.Close()
 
 	var payload queryResponse
 	if err := json.NewDecoder(resp.Body).Decode(&payload); err != nil {
-		return 0, false, err
+		return 0, 0, false, err
 	}
 	if payload.Status != "success" || len(payload.Data.Result) == 0 {
 		return 0, 0, false, nil

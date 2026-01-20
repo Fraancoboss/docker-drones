@@ -7,7 +7,6 @@ import (
 	"fmt"
 	"strings"
 	"text/tabwriter"
-	"time"
 
 	"drone-observe/internal/config"
 	"drone-observe/internal/freshness"
