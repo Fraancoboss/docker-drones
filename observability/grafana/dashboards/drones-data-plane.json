@@ -1,0 +1,80 @@
+{
+  "uid": "drones-data-plane",
+  "title": "Drones - Data Plane",
+  "timezone": "browser",
+  "schemaVersion": 39,
+  "version": 1,
+  "refresh": "10s",
+  "tags": ["drones", "data-plane"],
+  "panels": [
+    {
+      "type": "stat",
+      "title": "Bateria actual (%)",
+      "gridPos": { "x": 0, "y": 0, "w": 12, "h": 6 },
+      "datasource": { "type": "prometheus", "uid": "Prometheus" },
+      "targets": [
+        { "expr": "drone_battery_last_pct", "refId": "A" }
+      ],
+      "options": {
+        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "orientation": "horizontal",
+        "textMode": "value_and_name",
+        "colorMode": "value"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percent",
+          "min": 0,
+          "max": 100,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "value": null, "color": "red" },
+              { "value": 10, "color": "orange" },
+              { "value": 20, "color": "green" }
+            ]
+          }
+        },
+        "overrides": []
+      }
+    },
+    {
+      "type": "stat",
+      "title": "MQTT mensajes por segundo (1m) - actual",
+      "gridPos": { "x": 12, "y": 0, "w": 12, "h": 6 },
+      "datasource": { "type": "prometheus", "uid": "Prometheus" },
+      "targets": [
+        { "expr": "rate(mqtt_messages_total[1m])", "refId": "A" }
+      ],
+      "options": {
+        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "orientation": "horizontal",
+        "textMode": "value_and_name",
+        "colorMode": "value"
+      },
+      "fieldConfig": { "defaults": {}, "overrides": [] }
+    },
+    {
+      "type": "timeseries",
+      "title": "MQTT mensajes por segundo (1m)",
+      "gridPos": { "x": 0, "y": 6, "w": 24, "h": 7 },
+      "datasource": { "type": "prometheus", "uid": "Prometheus" },
+      "targets": [
+        { "expr": "rate(mqtt_messages_total[1m])", "refId": "A" }
+      ],
+      "fieldConfig": { "defaults": {}, "overrides": [] },
+      "options": { "legend": { "showLegend": true } }
+    },
+    {
+      "type": "timeseries",
+      "title": "MQTT mensajes por minuto (1m)",
+      "gridPos": { "x": 0, "y": 13, "w": 24, "h": 7 },
+      "datasource": { "type": "prometheus", "uid": "Prometheus" },
+      "targets": [
+        { "expr": "increase(mqtt_messages_total[1m])", "refId": "A" }
+      ],
+      "fieldConfig": { "defaults": {}, "overrides": [] },
+      "options": { "legend": { "showLegend": true } }
+    }
+  ]
+}
